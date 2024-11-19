@@ -10,7 +10,8 @@ sc = pickle.load(open('standscaler.pkl','rb'))
 ms = pickle.load(open('minmaxscaler.pkl','rb'))
 
 # creating flask app
-app = Flask(__name__)
+app = Flask(__name__, template_folder=r'C:\Users\udayd\OneDrive\Desktop\New folder (2)\Crop-Recommendation-System-Using-Machine-Learning\.venv\templates')
+
 
 @app.route('/')
 def index():
@@ -51,3 +52,8 @@ def predict():
 # python main
 if __name__ == "__main__":
     app.run(debug=True)
+from flask import Flask
+
+app = Flask(__name__)
+
+
