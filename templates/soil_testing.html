@@ -1,0 +1,688 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Soil Testing Services</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+      :root {
+        --primary: #2E7D32;
+        --primary-light: #4CAF50;
+        --primary-dark: #1B5E20;
+        --accent: #FF9800;
+        --text-dark: #263238;
+        --text-light: #ECEFF1;
+        --background-light: #F5F7FA;
+        --card-bg: #FFFFFF;
+        --success: #43A047;
+        --warning: #FFB300;
+        --danger: #E53935;
+      }
+
+      body {
+        background-image: url('/api/placeholder/1920/1080');
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+        font-family: 'Poppins', sans-serif;
+        color: var(--text-dark);
+        position: relative;
+      }
+
+      body::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(135deg, rgba(255,255,255,0.7), rgba(240,247,235,0.9));
+        z-index: -1;
+      }
+
+      .navbar {
+        background: rgba(46, 125, 50, 0.95) !important;
+        backdrop-filter: blur(10px);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      }
+
+      .navbar-brand {
+        color: var(--text-light) !important;
+        font-weight: 700;
+        font-size: 1.5rem;
+        display: flex;
+        align-items: center;
+      }
+
+      .navbar-brand i {
+        margin-right: 10px;
+        color: var(--accent);
+      }
+
+      .nav-link {
+        color: var(--text-light) !important;
+        font-weight: 500;
+        position: relative;
+        transition: all 0.3s ease;
+      }
+
+      .nav-link::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background-color: var(--accent);
+        transition: width 0.3s ease;
+      }
+
+      .nav-link:hover::after, .nav-link.active::after {
+        width: 100%;
+      }
+
+      .hero-section {
+        background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('/api/placeholder/1200/400') center/cover no-repeat;
+        color: white;
+        padding: 100px 0;
+        margin-bottom: 40px;
+        border-radius: 0 0 15px 15px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+      }
+
+      .hero-content {
+        max-width: 800px;
+        margin: 0 auto;
+        text-align: center;
+      }
+
+      .page-title {
+        font-size: 3rem;
+        margin-bottom: 20px;
+        color: white;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+      }
+
+      .main-container {
+        background: rgba(255, 255, 255, 0.92);
+        padding: 40px;
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        margin-bottom: 40px;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.18);
+      }
+
+      .service-card {
+        background-color: var(--card-bg);
+        border-radius: 15px;
+        padding: 25px;
+        margin-bottom: 30px;
+        transition: all 0.3s ease;
+        border: 1px solid rgba(0, 0, 0, 0.05);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.12);
+      }
+
+      .service-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.18);
+      }
+
+      .service-icon {
+        width: 70px;
+        height: 70px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: var(--primary);
+        color: white;
+        font-size: 28px;
+        border-radius: 50%;
+        margin-bottom: 20px;
+      }
+
+      .form-container {
+        background-color: var(--card-bg);
+        border-radius: 15px;
+        padding: 40px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.18);
+      }
+
+      .form-label {
+        font-weight: 600;
+        color: var(--text-dark);
+        margin-bottom: 8px;
+        font-size: 0.95rem;
+      }
+
+      .form-control {
+        padding: 12px 15px;
+        border-radius: 10px;
+        border: 1px solid #E0E0E0;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        transition: all 0.3s ease;
+      }
+
+      .form-control:focus {
+        border-color: var(--primary-light);
+        box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.25);
+      }
+
+      .btn-primary {
+        background: var(--primary);
+        border: none;
+        padding: 12px 30px;
+        font-size: 1rem;
+        font-weight: 600;
+        border-radius: 30px;
+        box-shadow: 0 4px 10px rgba(46, 125, 50, 0.3);
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+      }
+
+      .btn-primary:hover {
+        background: var(--primary-dark);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 15px rgba(46, 125, 50, 0.4);
+      }
+
+      .btn-primary:active {
+        transform: translateY(0);
+      }
+
+      .section-title {
+        position: relative;
+        margin-bottom: 30px;
+        padding-bottom: 15px;
+        color: var(--primary-dark);
+      }
+
+      .section-title::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: 100px;
+        height: 4px;
+        background: var(--accent);
+        border-radius: 4px;
+      }
+
+      .info-list {
+        list-style: none;
+        padding-left: 0;
+      }
+
+      .info-list li {
+        padding: 12px 0;
+        border-bottom: 1px solid #E2E8F0;
+        display: flex;
+        align-items: center;
+      }
+
+      .info-list li:last-child {
+        border-bottom: none;
+      }
+
+      .info-list i {
+        color: var(--primary);
+        margin-right: 15px;
+        font-size: 18px;
+      }
+
+      .footer {
+        background: rgba(46, 125, 50, 0.95);
+        color: var(--text-light);
+        padding: 30px 0;
+        border-radius: 15px 15px 0 0;
+        margin-top: 50px;
+      }
+
+      .footer-links {
+        list-style: none;
+        padding-left: 0;
+      }
+
+      .footer-links li {
+        margin-bottom: 10px;
+      }
+
+      .footer-links a {
+        color: rgba(255, 255, 255, 0.8);
+        text-decoration: none;
+        transition: all 0.3s ease;
+      }
+
+      .footer-links a:hover {
+        color: white;
+        text-decoration: underline;
+      }
+
+      .social-icons a {
+        display: inline-block;
+        width: 40px;
+        height: 40px;
+        background-color: rgba(255, 255, 255, 0.1);
+        border-radius: 50%;
+        text-align: center;
+        line-height: 40px;
+        margin-right: 10px;
+        color: white;
+        transition: all 0.3s ease;
+      }
+
+      .social-icons a:hover {
+        background-color: var(--primary);
+        transform: translateY(-3px);
+      }
+
+      .success-popup {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: white;
+        padding: 30px;
+        border-radius: 15px;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+        z-index: 1000;
+        display: none;
+        max-width: 400px;
+        text-align: center;
+      }
+
+      .overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.6);
+        z-index: 999;
+        display: none;
+      }
+
+      .success-icon {
+        width: 80px;
+        height: 80px;
+        background-color: var(--success);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 20px;
+        color: white;
+        font-size: 40px;
+      }
+
+      @media (max-width: 768px) {
+        .page-title {
+          font-size: 2.2rem;
+        }
+
+        .hero-section {
+          padding: 60px 0;
+        }
+
+        .main-container, .form-container {
+          padding: 25px;
+        }
+      }
+
+      .animate-in {
+        animation: fadeIn 0.5s ease-out;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+      <div class="container">
+        <a class="navbar-brand" href="/"><i class="fas fa-seedling"></i>Agrismart Advisor</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link" href="/"><i class="fas fa-home me-1"></i>Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="/soil-testing"><i class="fas fa-flask me-1"></i>Soil Testing</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/crop-guide"><i class="fas fa-leaf me-1"></i>Crop Guide</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/about"><i class="fas fa-info-circle me-1"></i>About Us</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/contact"><i class="fas fa-phone-alt me-1"></i>Contact</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+      <div class="container">
+        <div class="hero-content">
+          <h1 class="page-title"><i class="fas fa-flask me-2"></i>Soil Testing Services</h1>
+          <p class="lead">Discover the health and fertility of your soil with our comprehensive testing solutions</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Main Content -->
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8">
+          <div class="main-container animate-in">
+            <h2 class="section-title">Why Soil Testing Matters</h2>
+            <p>
+              Soil testing is a crucial step in understanding the health and fertility of your soil. 
+              It helps you determine the nutrient levels, pH, and other properties of your soil, 
+              enabling you to make informed decisions about crop selection and fertilization.
+            </p>
+            <p>
+              With accurate soil test results, you can:
+            </p>
+            <div class="row mt-4">
+              <div class="col-md-6">
+                <div class="service-card">
+                  <div class="service-icon">
+                    <i class="fas fa-seedling"></i>
+                  </div>
+                  <h4>Optimize Crop Selection</h4>
+                  <p>Choose the most suitable crops based on your soil's characteristics.</p>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="service-card">
+                  <div class="service-icon">
+                    <i class="fas fa-tint"></i>
+                  </div>
+                  <h4>Improve Water Management</h4>
+                  <p>Understand drainage characteristics and water retention capacity.</p>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="service-card">
+                  <div class="service-icon">
+                    <i class="fas fa-leaf"></i>
+                  </div>
+                  <h4>Reduce Fertilizer Waste</h4>
+                  <p>Apply only the nutrients your soil actually needs, saving money and reducing runoff.</p>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="service-card">
+                  <div class="service-icon">
+                    <i class="fas fa-chart-line"></i>
+                  </div>
+                  <h4>Increase Yield Potential</h4>
+                  <p>Create optimal growing conditions for healthier plants and better harvests.</p>
+                </div>
+              </div>
+            </div>
+            
+            <h2 class="section-title mt-5">Our Comprehensive Testing Services</h2>
+            <ul class="info-list">
+              <li>
+                <i class="fas fa-vial"></i>
+                <div>
+                  <strong>Nutrient Analysis (N-P-K)</strong>
+                  <p class="mb-0">Complete analysis of Nitrogen, Phosphorus, and Potassium levels.</p>
+                </div>
+              </li>
+              <li>
+                <i class="fas fa-balance-scale"></i>
+                <div>
+                  <strong>pH Level Testing</strong>
+                  <p class="mb-0">Determine if your soil is acidic, neutral, or alkaline to guide amendment strategies.</p>
+                </div>
+              </li>
+              <li>
+                <i class="fas fa-microscope"></i>
+                <div>
+                  <strong>Organic Matter Content</strong>
+                  <p class="mb-0">Assess soil fertility and structure based on organic material present.</p>
+                </div>
+              </li>
+              <li>
+                <i class="fas fa-filter"></i>
+                <div>
+                  <strong>Soil Texture Analysis</strong>
+                  <p class="mb-0">Understand the composition of sand, silt, and clay in your soil.</p>
+                </div>
+              </li>
+              <li>
+                <i class="fas fa-bug"></i>
+                <div>
+                  <strong>Microbiological Assessment</strong>
+                  <p class="mb-0">Analysis of beneficial microorganisms that contribute to soil health.</p>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+        
+        <div class="col-lg-4">
+          <div class="form-container animate-in">
+            <h3 class="text-center mb-4">Request Soil Testing</h3>
+            <form id="soilTestForm">
+              <div class="mb-3">
+                <label for="name" class="form-label">Full Name</label>
+                <div class="input-group">
+                  <span class="input-group-text"><i class="fas fa-user"></i></span>
+                  <input type="text" id="name" name="name" placeholder="Enter your full name" class="form-control" required>
+                </div>
+              </div>
+              
+              <div class="mb-3">
+                <label for="email" class="form-label">Email Address</label>
+                <div class="input-group">
+                  <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                  <input type="email" id="email" name="email" placeholder="Enter your email" class="form-control" required>
+                </div>
+              </div>
+              
+              <div class="mb-3">
+                <label for="phone" class="form-label">Phone Number</label>
+                <div class="input-group">
+                  <span class="input-group-text"><i class="fas fa-phone"></i></span>
+                  <input type="tel" id="phone" name="phone" placeholder="Enter your phone number" class="form-control" required>
+                </div>
+              </div>
+              
+              <div class="mb-3">
+                <label for="location" class="form-label">Farm Location</label>
+                <div class="input-group">
+                  <span class="input-group-text"><i class="fas fa-map-marker-alt"></i></span>
+                  <input type="text" id="location" name="location" placeholder="Enter your farm location" class="form-control" required>
+                </div>
+              </div>
+              
+              <div class="mb-3">
+                <label for="farmSize" class="form-label">Farm Size (acres)</label>
+                <div class="input-group">
+                  <span class="input-group-text"><i class="fas fa-ruler-combined"></i></span>
+                  <input type="number" id="farmSize" name="farmSize" placeholder="Enter farm size" class="form-control">
+                </div>
+              </div>
+              
+              <div class="mb-3">
+                <label for="cropType" class="form-label">Current/Planned Crops</label>
+                <div class="input-group">
+                  <span class="input-group-text"><i class="fas fa-leaf"></i></span>
+                  <input type="text" id="cropType" name="cropType" placeholder="What are you growing?" class="form-control">
+                </div>
+              </div>
+              
+              <div class="mb-3">
+                <label for="message" class="form-label">Additional Information</label>
+                <textarea id="message" name="message" placeholder="Any specific concerns or requirements?" class="form-control" rows="4"></textarea>
+              </div>
+              
+              <div class="form-check mb-4">
+                <input class="form-check-input" type="checkbox" value="" id="termsCheck" required>
+                <label class="form-check-label" for="termsCheck">
+                  I agree to the terms and conditions
+                </label>
+              </div>
+              
+              <div class="d-grid gap-2">
+                <button type="submit" class="btn btn-primary btn-lg">
+                  <i class="fas fa-paper-plane me-2"></i>Submit Request
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-4 mb-4 mb-md-0">
+            <h5 class="mb-4"><i class="fas fa-seedling me-2"></i>GreenHarvest</h5>
+            <p>Providing innovative agricultural solutions to help farmers grow better crops with sustainable practices.</p>
+            <div class="social-icons mt-3">
+              
+              <a href="https://x.com/U7K4R5H?t=gUGPlrQymM5jw--gX0VGaQ&s=09" target="_blank"><i class="fab fa-twitter"></i></a>
+              <a href="https://www.instagram.com/_u7k4r5h_?igsh=MTh1OXJpcnA3YXIzeg==" target="_blank"><i class="fab fa-instagram"></i></a>
+              <a href="https://www.linkedin.com/in/utkarsh-batham-531913247?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+            </div>
+          </div>
+          <div class="col-md-3 mb-4 mb-md-0">
+            <h5 class="mb-4">Quick Links</h5>
+            <ul class="footer-links">
+              <li><a href="/"><i class="fas fa-angle-right me-2"></i>Home</a></li>
+              <li><a href="/soil-testing"><i class="fas fa-angle-right me-2"></i>Soil Testing</a></li>
+              <li><a href="#"><i class="fas fa-angle-right me-2"></i>Crop Guide</a></li>
+              <li><a href="/about"><i class="fas fa-angle-right me-2"></i>About Us</a></li>
+              <li><a href="/contact"><i class="fas fa-angle-right me-2"></i>Contact</a></li>
+            </ul>
+          </div>
+          <div class="col-md-2 mb-4 mb-md-0">
+            <h5 class="mb-4">Services</h5>
+            <ul class="footer-links">
+              <li><a href="/soil-testing">Soil Testing</a></li>
+              <li><a href="/">Crop Recommendation</a></li>
+              <li><a href="#">Crop Guide</a></li>
+              <li><a href="/contact">Consultations</a></li>
+            </ul>
+          </div>
+          <div class="col-md-3">
+            <h5 class="mb-4">Contact Us</h5>
+            <ul class="footer-links">
+              <li><i class="fas fa-map-marker-alt me-2"></i>123 Farm Road, Agritown</li>
+              <li><i class="fas fa-phone me-2"></i>+91 8141549847</li>
+              <li><i class="fas fa-envelope me-2"></i>info@greenharvest.com</li>
+            </ul>
+          </div>
+        </div>
+        <hr class="my-4" style="border-color: rgba(255, 255, 255, 0.1);">
+        <div class="text-center">
+          <p class="mb-0">&copy; 2025 GreenHarvest. All rights reserved.</p>
+        </div>
+      </div>
+    </footer>
+    
+    <!-- Success Popup -->
+    <div class="overlay" id="overlay"></div>
+    <div class="success-popup" id="successPopup">
+      <div class="success-icon">
+        <i class="fas fa-check"></i>
+      </div>
+      <h3>Request Submitted!</h3>
+      <p>Thank you for your soil testing request. Our team will contact you within 24 hours to schedule your test.</p>
+      <button class="btn btn-primary mt-3" onclick="closePopup()">Close</button>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
+
+    <!-- JavaScript to handle form submission -->
+    <script>
+      document.getElementById('soilTestForm').addEventListener('submit', async (event) => {
+        event.preventDefault(); // Prevent default form submission
+
+        // Get form data
+        const formData = new FormData(event.target);
+        const data = Object.fromEntries(formData.entries());
+        console.log("Soil test request data:", data);
+
+        try {
+          // Send form data to Flask backend
+          const response = await fetch('/submit-soil-test', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
+          });
+
+          const result = await response.json();
+          console.log("Response from Flask backend:", result);
+
+          // Display success popup
+          document.getElementById('overlay').style.display = 'block';
+          document.getElementById('successPopup').style.display = 'block';
+          
+          // Reset form
+          event.target.reset();
+          
+        } catch (error) {
+          console.error("Error submitting form:", error);
+          alert("There was an error submitting your request. Please try again.");
+        }
+      });
+      
+      function closePopup() {
+        document.getElementById('overlay').style.display = 'none';
+        document.getElementById('successPopup').style.display = 'none';
+      }
+      
+      // Add animation on scroll
+      document.addEventListener('DOMContentLoaded', function() {
+        const animateElements = document.querySelectorAll('.service-card');
+        
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('animate-in');
+            }
+          });
+        }, { threshold: 0.1 });
+        
+        animateElements.forEach(element => {
+          observer.observe(element);
+        });
+      });
+    </script>
+  </body>
+</html>

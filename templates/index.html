@@ -1,0 +1,797 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Crop Recommendation System</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+      :root {
+        --primary: #2E7D32;
+        --primary-light: #4CAF50;
+        --primary-dark: #1B5E20;
+        --accent: #FF9800;
+        --text-dark: #263238;
+        --text-light: #ECEFF1;
+        --background-light: #F5F7FA;
+        --card-bg: #FFFFFF;
+        --success: #43A047;
+        --warning: #FFB300;
+        --danger: #E53935;
+      }
+      
+      body {
+        background-image: url('/api/placeholder/1920/1080');
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+        font-family: 'Poppins', sans-serif;
+        color: var(--text-dark);
+        position: relative;
+      }
+      
+      body::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(135deg, rgba(255,255,255,0.7), rgba(240,247,235,0.9));
+        z-index: -1;
+      }
+      
+      .navbar {
+        background: rgba(46, 125, 50, 0.95) !important;
+        backdrop-filter: blur(10px);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      }
+      
+      .navbar-brand {
+        color: var(--text-light) !important;
+        font-weight: 700;
+        font-size: 1.5rem;
+        display: flex;
+        align-items: center;
+      }
+      
+      .navbar-brand i {
+        margin-right: 10px;
+        color: var(--accent);
+      }
+      
+      .nav-link {
+        color: var(--text-light) !important;
+        font-weight: 500;
+        position: relative;
+        transition: all 0.3s ease;
+      }
+      
+      .nav-link::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background-color: var(--accent);
+        transition: width 0.3s ease;
+      }
+      
+      .nav-link:hover::after, .nav-link.active::after {
+        width: 100%;
+      }
+      
+      .container.main-content {
+        background: rgba(255, 255, 255, 0.92);
+        padding: 40px;
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        margin-top: 40px;
+        margin-bottom: 40px;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.18);
+      }
+      
+      h1 {
+        color: var(--primary);
+        text-align: center;
+        font-weight: 700;
+        margin-bottom: 40px;
+        position: relative;
+        display: inline-block;
+        padding-bottom: 15px;
+      }
+      
+      h1::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 100px;
+        height: 4px;
+        background: var(--accent);
+        border-radius: 4px;
+      }
+      
+      .form-label {
+        font-weight: 600;
+        color: var(--text-dark);
+        margin-bottom: 8px;
+        font-size: 0.95rem;
+      }
+      
+      .form-control {
+        padding: 12px 15px;
+        border-radius: 10px;
+        border: 1px solid #E0E0E0;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        transition: all 0.3s ease;
+      }
+      
+      .form-control:focus {
+        border-color: var(--primary-light);
+        box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.25);
+      }
+      
+      .input-group {
+        margin-bottom: 20px;
+      }
+      
+      .input-group-text {
+        background-color: var(--primary-light);
+        color: white;
+        border: none;
+        border-radius: 10px 0 0 10px;
+        width: 45px;
+        display: flex;
+        justify-content: center;
+      }
+      
+      .form-field {
+        position: relative;
+        margin-bottom: 24px;
+      }
+      
+      .form-field i {
+        position: absolute;
+        top: 41px;
+        left: 15px;
+        color: var(--primary);
+      }
+      
+      .form-field input {
+        padding-left: 40px;
+      }
+      
+      .btn-primary {
+        background: var(--primary);
+        border: none;
+        padding: 12px 30px;
+        font-size: 1rem;
+        font-weight: 600;
+        border-radius: 30px;
+        box-shadow: 0 4px 10px rgba(46, 125, 50, 0.3);
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+      }
+      
+      .btn-primary:hover {
+        background: var(--primary-dark);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 15px rgba(46, 125, 50, 0.4);
+      }
+      
+      .btn-primary:active {
+        transform: translateY(0);
+      }
+      
+      .card {
+        background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+        color: var(--text-light);
+        border: none;
+        border-radius: 15px;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.12);
+        overflow: hidden;
+        transition: all 0.3s ease;
+      }
+      
+      .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.18);
+      }
+      
+      .card-header {
+        background: rgba(255, 255, 255, 0.1);
+        border-bottom: none;
+        padding: 20px;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+      }
+      
+      .card-header i {
+        font-size: 2rem;
+        color: var(--accent);
+      }
+      
+      .card-title {
+        font-weight: 700;
+        margin: 0;
+        font-size: 1.5rem;
+      }
+      
+      .card-body .row {
+    display: flex;
+    align-items: center;
+  }
+
+      .card-body .col-md-6 {
+    padding: 15px;
+  }
+      
+      .card-text {
+        font-size: 1.25rem;
+        font-weight: 500;
+      }
+      
+      .crop-details {
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 10px;
+        padding: 15px;
+        margin-top: 15px;
+      }
+      
+      .crop-details p {
+        margin-bottom: 8px;
+      }
+      
+      .loader {
+        display: none;
+        text-align: center;
+        padding: 20px;
+      }
+      
+      .spinner-border {
+        width: 3rem;
+        height: 3rem;
+        color: var(--primary);
+      }
+      
+      .form-section-title {
+        color: var(--primary);
+        margin-bottom: 20px;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      
+      .form-section-title i {
+        color: var(--accent);
+      }
+      
+      .footer {
+        background: rgba(46, 125, 50, 0.95);
+        color: var(--text-light);
+        padding: 30px 0;
+        border-radius: 15px 15px 0 0;
+        margin-top: 50px;
+      }
+
+      .footer-links {
+        list-style: none;
+        padding-left: 0;
+      }
+
+      .footer-links li {
+        margin-bottom: 10px;
+      }
+
+      .footer-links a {
+        color: rgba(255, 255, 255, 0.8);
+        text-decoration: none;
+        transition: all 0.3s ease;
+      }
+
+      .footer-links a:hover {
+        color: white;
+        text-decoration: underline;
+      }
+
+      .social-icons a {
+        display: inline-block;
+        width: 40px;
+        height: 40px;
+        background-color: rgba(255, 255, 255, 0.1);
+        border-radius: 50%;
+        text-align: center;
+        line-height: 40px;
+        margin-right: 10px;
+        color: white;
+        transition: all 0.3s ease;
+      }
+
+      .social-icons a:hover {
+        background-color: var(--primary);
+        transform: translateY(-3px);
+      
+      }
+      
+      .pulse {
+        animation: pulse 2s infinite;
+      }
+      
+      @keyframes pulse {
+        0% {
+          box-shadow: 0 0 0 0 rgba(76, 175, 80, 0.7);
+        }
+        70% {
+          box-shadow: 0 0 0 10px rgba(76, 175, 80, 0);
+        }
+        100% {
+          box-shadow: 0 0 0 0 rgba(76, 175, 80, 0);
+        }
+      }
+      
+      .tooltip-icon {
+        cursor: pointer;
+        color: var(--primary-light);
+        margin-left: 5px;
+      }
+      
+      .recommendation-result {
+        display: none;
+        margin-top: 40px;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+      <div class="container">
+        <a class="navbar-brand" href="/"><i class="fas fa-seedling"></i> AgriSmart Advisor</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="/"><i class="fas fa-home"></i> Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/soil-testing"><i class="fas fa-flask"></i> Soil Testing</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/crop-guide"><i class="fas fa-chart-line"></i> Crop Guide</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/about"><i class="fas fa-info-circle"></i> About Us</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/contact"><i class="fas fa-phone-alt me-1"></i>Contact</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container main-content">
+      <div class="text-center">
+        <h1>Smart Crop Recommendation <i class="fas fa-leaf"></i></h1>
+        <p class="lead mb-5">Get personalized crop recommendations based on soil nutrients and environmental conditions</p>
+      </div>
+
+      <!-- Form for crop recommendation -->
+      <form id="cropForm">
+        
+        <div class="row">
+          <div class="col-md-12">
+            <h4 class="form-section-title"><i class="fas fa-flask"></i> Soil Nutrients</h4>
+          </div>
+          
+          <div class="col-md-4">
+            <div class="form-field">
+              <label for="Nitrogen" class="form-label">Nitrogen (N) <i class="fas fa-info-circle tooltip-icon" data-bs-toggle="tooltip" title="Nitrogen content in soil (mg/kg)"></i></label>
+              <i class="fas fa-vial"></i>
+              <input type="number" id="Nitrogen" name="Nitrogen" placeholder="Enter Nitrogen content" class="form-control" required>
+            </div>
+          </div>
+          
+          <div class="col-md-4">
+            <div class="form-field">
+              <label for="Phosporus" class="form-label">Phosphorus (P) <i class="fas fa-info-circle tooltip-icon" data-bs-toggle="tooltip" title="Phosphorus content in soil (mg/kg)"></i></label>
+              <i class="fas fa-vial"></i>
+              <input type="number" id="Phosporus" name="Phosporus" placeholder="Enter Phosphorus content" class="form-control" required>
+            </div>
+          </div>
+          
+          <div class="col-md-4">
+            <div class="form-field">
+              <label for="Potassium" class="form-label">Potassium (K) <i class="fas fa-info-circle tooltip-icon" data-bs-toggle="tooltip" title="Potassium content in soil (mg/kg)"></i></label>
+              <i class="fas fa-vial"></i>
+              <input type="number" id="Potassium" name="Potassium" placeholder="Enter Potassium content" class="form-control" required>
+            </div>
+          </div>
+        </div>
+
+        <div class="row mt-4">
+          <div class="col-md-12">
+            <h4 class="form-section-title"><i class="fas fa-cloud-rain"></i> Environmental Factors</h4>
+          </div>
+          
+          <div class="col-md-3">
+            <div class="form-field">
+              <label for="Temperature" class="form-label">Temperature (°C) <i class="fas fa-info-circle tooltip-icon" data-bs-toggle="tooltip" title="Average temperature in Celsius"></i></label>
+              <i class="fas fa-temperature-high"></i>
+              <input type="number" step="0.01" id="Temperature" name="Temperature" placeholder="Enter temperature" class="form-control" required>
+            </div>
+          </div>
+          
+          <div class="col-md-3">
+            <div class="form-field">
+              <label for="Humidity" class="form-label">Humidity (%) <i class="fas fa-info-circle tooltip-icon" data-bs-toggle="tooltip" title="Relative humidity percentage"></i></label>
+              <i class="fas fa-tint"></i>
+              <input type="number" step="0.01" id="Humidity" name="Humidity" placeholder="Enter humidity" class="form-control" required>
+            </div>
+          </div>
+          
+          <div class="col-md-3">
+            <div class="form-field">
+              <label for="pH" class="form-label">Soil pH <i class="fas fa-info-circle tooltip-icon" data-bs-toggle="tooltip" title="pH value of the soil (0-14)"></i></label>
+              <i class="fas fa-flask"></i>
+              <input type="number" step="0.01" id="pH" name="pH" placeholder="Enter soil pH" class="form-control" required>
+            </div>
+          </div>
+          
+          <div class="col-md-3">
+            <div class="form-field">
+              <label for="Rainfall" class="form-label">Rainfall (mm) <i class="fas fa-info-circle tooltip-icon" data-bs-toggle="tooltip" title="Annual rainfall in millimeters"></i></label>
+              <i class="fas fa-cloud-rain"></i>
+              <input type="number" step="0.01" id="Rainfall" name="Rainfall" placeholder="Enter rainfall" class="form-control" required>
+            </div>
+          </div>
+        </div>
+        
+        <div class="row mt-4">
+          <div class="col-12 text-center">
+            <button type="submit" id="getRecommendation" class="btn btn-primary pulse">
+              <i class="fas fa-seedling"></i> Get Crop Recommendation
+            </button>
+          </div>
+        </div>
+      </form>
+      
+      <!-- Loading indicator -->
+      <div id="loader" class="loader">
+        <div class="spinner-border" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+        <p class="mt-3">Analyzing soil and environmental conditions...</p>
+      </div>
+      
+      <!-- Recommendation result -->
+      <div id="recommendationResult" class="recommendation-result">
+        <div class="card">
+          <div class="card-header">
+            <i class="fas fa-award"></i>
+            <h5 class="card-title">Recommended Crop</h5>
+          </div>
+          <div class="card-body">
+            <div class="row">
+              <div class="col-md-6">
+                <h2 class="card-text text-center mb-4" id="recommendedCrop">Rice</h2>
+                <div class="crop-details">
+                  <p><strong>Suitability Score:</strong> <span id="suitabilityScore">92%</span></p>
+                  <p><strong>Growing Season:</strong> <span id="growingSeason">June to November</span></p>
+                  <p><strong>Estimated Yield:</strong> <span id="estimatedYield">3.5 tons per hectare</span></p>
+                  <p><strong>Water Requirements:</strong> <span id="waterRequirements">High</span></p>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <img id="cropImage" src="" alt="Recommended Crop" class="img-fluid mb-4" style="max-width: 100%; height: auto; border-radius: 10px;">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-4 mb-4 mb-md-0">
+            <h5 class="mb-4"><i class="fas fa-seedling me-2"></i>GreenHarvest</h5>
+            <p>Providing innovative agricultural solutions to help farmers grow better crops with sustainable practices.</p>
+            <div class="social-icons mt-3">
+              
+              <a href="https://x.com/U7K4R5H?t=gUGPlrQymM5jw--gX0VGaQ&s=09" target="_blank"><i class="fab fa-twitter"></i></a>
+              <a href="https://www.instagram.com/_u7k4r5h_?igsh=MTh1OXJpcnA3YXIzeg==" target="_blank"><i class="fab fa-instagram"></i></a>
+              <a href="https://www.linkedin.com/in/utkarsh-batham-531913247?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+            </div>
+          </div>
+          <div class="col-md-3 mb-4 mb-md-0">
+            <h5 class="mb-4">Quick Links</h5>
+            <ul class="footer-links">
+              <li><a href="#"><i class="fas fa-angle-right me-2"></i>Home</a></li>
+              <li><a href="/soil-testing"><i class="fas fa-angle-right me-2"></i>Soil Testing</a></li>
+              <li><a href="#"><i class="fas fa-angle-right me-2"></i>Crop Guide</a></li>
+              <li><a href="/about"><i class="fas fa-angle-right me-2"></i>About Us</a></li>
+              <li><a href="/contact"><i class="fas fa-angle-right me-2"></i>Contact</a></li>
+            </ul>
+          </div>
+          <div class="col-md-2 mb-4 mb-md-0">
+            <h5 class="mb-4">Services</h5>
+            <ul class="footer-links">
+              <li><a href="/soil-testing">Soil Testing</a></li>
+              <li><a href="#">Crop Recommendation</a></li>
+              <li><a href="#">Crop Guide</a></li>
+              <li><a href="/contact">Consultations</a></li>
+            </ul>
+          </div>
+          <div class="col-md-3">
+            <h5 class="mb-4">Contact Us</h5>
+            <ul class="footer-links">
+              <li><i class="fas fa-map-marker-alt me-2"></i>123 Farm Road, Agritown</li>
+              <li><i class="fas fa-phone me-2"></i>+91 8141549847</li>
+              <li><i class="fas fa-envelope me-2"></i>info@greenharvest.com</li>
+            </ul>
+          </div>
+        </div>
+        <hr class="my-4" style="border-color: rgba(255, 255, 255, 0.1);">
+        <div class="text-center">
+          <p class="mb-0">&copy; 2025 GreenHarvest. All rights reserved.</p>
+        </div>
+      </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        // Initialize tooltips
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl);
+        });
+    
+        // Dictionary for crop details (22 crops with images)
+        const cropDetails = {
+            "Rice": {
+                suitabilityScore: "92%",
+                growingSeason: "June to November",
+                estimatedYield: "3.5 tons per hectare",
+                waterRequirements: "High",
+                image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQnMwJtm-Na5PA321uDLvpv1-1cSEbOcihI6g&s" 
+            },
+            "Maize": {
+                suitabilityScore: "85%",
+                growingSeason: "May to September",
+                estimatedYield: "3.0 tons per hectare",
+                waterRequirements: "Moderate",
+                image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSewGNo4g9ZlNClMms3ZT7-kROWE3868Tts6Q&s"
+            },
+            "Jute": {
+                suitabilityScore: "83%",
+                growingSeason: "March to July",
+                estimatedYield: "2.5 tons per hectare",
+                waterRequirements: "High",
+                image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQWjd07irbXKejrZBqn_vKmqq7YosUt5QdhIQ&s"
+            },
+            "Cotton": {
+                suitabilityScore: "84%",
+                growingSeason: "April to October",
+                estimatedYield: "1.5 tons per hectare",
+                waterRequirements: "High",
+                image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSQExaDbVMkpfnSlLuQHyADBE-11faApLEYrw&s"
+            },
+            "Coconut": {
+                suitabilityScore: "92%",
+                growingSeason: "Year-round",
+                estimatedYield: "10,000 nuts per hectare",
+                waterRequirements: "High",
+                image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQjl3d0LQWAiXv17GjyCOYKe18xzFQmc10XVA&s"
+            },
+            "Papaya": {
+                suitabilityScore: "89%",
+                growingSeason: "Year-round",
+                estimatedYield: "30 tons per hectare",
+                waterRequirements: "High",
+                image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSTEUa6eOtYZESwOs_LbK8kTfoHAwqOPp4_rg&s"
+            },
+            "Orange": {
+                suitabilityScore: "88%",
+                growingSeason: "November to March",
+                estimatedYield: "20 tons per hectare",
+                waterRequirements: "Moderate",
+                image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRk7HiSGRT5fDPEC6TQc2vdZbR4b65DuLdr7Q&s"
+            },
+            "Apple": {
+                suitabilityScore: "87%",
+                growingSeason: "April to October",
+                estimatedYield: "15 tons per hectare",
+                waterRequirements: "Moderate",
+                image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQkKimTPjmPF8UA1GOgRwOPj_UGJ6POXDkqDw&s"
+            },
+            "Muskmelon": {
+                suitabilityScore: "86%",
+                growingSeason: "March to July",
+                estimatedYield: "10 tons per hectare",
+                waterRequirements: "High",
+                image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQWEaQsN8e-dhCWS2PjMpEBdOFJJDQ-6rRNCw&s"
+            },
+            "Watermelon": {
+                suitabilityScore: "85%",
+                growingSeason: "March to July",
+                estimatedYield: "12 tons per hectare",
+                waterRequirements: "High",
+                image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRocXAegF4BhMZyP8hvIauJpYgHp71RYJ0lcA&s"
+            },
+            "Grapes": {
+                suitabilityScore: "90%",
+                growingSeason: "February to June",
+                estimatedYield: "8 tons per hectare",
+                waterRequirements: "Moderate",
+                image: "https://www.farmatma.in/wp-content/uploads/2023/12/grape-cultivation.jpg"
+            },
+            "Mango": {
+                suitabilityScore: "93%",
+                growingSeason: "March to July",
+                estimatedYield: "10 tons per hectare",
+                waterRequirements: "Moderate",
+                image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTkjaypMFACU5WRQPhmNuBFZLXB_8NbLERJVA&s"
+            },
+            "Banana": {
+                suitabilityScore: "94%",
+                growingSeason: "Year-round",
+                estimatedYield: "30 tons per hectare",
+                waterRequirements: "Very High",
+                image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ_tXSSJsc_0ywdN9fRKMMRlV_y9aDLIqOWhA&s"
+            },
+            "Pomegranate": {
+                suitabilityScore: "89%",
+                growingSeason: "October to February",
+                estimatedYield: "15 tons per hectare",
+                waterRequirements: "Moderate",
+                image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT_gm58KPgJYskSoIu4aei-cVaqUhvhYu3H6g&s"
+            },
+            "Lentil": {
+                suitabilityScore: "87%",
+                growingSeason: "October to March",
+                estimatedYield: "1.2 tons per hectare",
+                waterRequirements: "Low",
+                image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTLgv1GIl68p_Dg6bCmqOH6Jt9hmU0O82fZUw&s"
+            },
+            "Blackgram": {
+                suitabilityScore: "86%",
+                growingSeason: "June to September",
+                estimatedYield: "1.0 ton per hectare",
+                waterRequirements: "Low",
+                image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRFEvZsZYvpKGwdPf8aTavClxv8yClnMrtt3w&s"
+            },
+            "Mungbean": {
+                suitabilityScore: "85%",
+                growingSeason: "June to September",
+                estimatedYield: "1.1 tons per hectare",
+                waterRequirements: "Low",
+                image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTWHUq3ZK9gCwkTb1y9ntbdHJy-gjfH166iAg&s"
+            },
+            "Mothbeans": {
+                suitabilityScore: "84%",
+                growingSeason: "June to September",
+                estimatedYield: "0.9 tons per hectare",
+                waterRequirements: "Low",
+                image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTAuhEUwJ41tLrdIxtmjQYqBy7CikU6jfNIpQ&s"
+            },
+            "Pigeonpeas": {
+                suitabilityScore: "85%",
+                growingSeason: "June to December",
+                estimatedYield: "1.2 tons per hectare",
+                waterRequirements: "Low",
+                image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT2o9aT-XGl-I76aZOiNW3l_8qXVZSTq7zSOg&s"
+            },
+            "Kidneybeans": {
+                suitabilityScore: "86%",
+                growingSeason: "October to March",
+                estimatedYield: "1.5 tons per hectare",
+                waterRequirements: "Moderate",
+                image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRpDru0lB5rSz4XqXuPdXEoVv_3sHptAjOFYw&s"
+            },
+            "Chickpea": {
+                suitabilityScore: "88%",
+                growingSeason: "October to March",
+                estimatedYield: "1.5 tons per hectare",
+                waterRequirements: "Low",
+                image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ3SUO80G9SCDOVWN_LVUIsmP6BjLF9Yr3u3w&s"
+            },
+            "Coffee": {
+                suitabilityScore: "91%",
+                growingSeason: "Year-round",
+                estimatedYield: "1.5 tons per hectare",
+                waterRequirements: "High",
+                image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRz0s5W6s8Jwzk9nF2n0LlvdrEooJ_8ywU6qA&s"
+            }
+        };
+    
+        // Add event listener for "Get Recommendation" button
+        document.getElementById('getRecommendation').addEventListener('click', function(event) {
+            event.preventDefault(); // Prevent the default form submission
+    
+            // Show the loader
+            document.getElementById('loader').style.display = 'block';
+            document.getElementById('recommendationResult').style.display = 'none';
+    
+            // Get form data
+            const formData = {
+                Nitrogen: document.getElementById('Nitrogen').value,
+                Phosphorus: document.getElementById('Phosporus').value,
+                Potassium: document.getElementById('Potassium').value,
+                Ph: document.getElementById('pH').value,
+                Temperature: document.getElementById('Temperature').value,
+                Humidity: document.getElementById('Humidity').value,
+                Rainfall: document.getElementById('Rainfall').value
+            };
+    
+            console.log('Form data:', formData);  // Log form data for debugging
+    
+            // Send POST request to the server
+            fetch('/crop-recommendation', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData),
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('Recommendation received:', data);  // Log the response
+                document.getElementById('loader').style.display = 'none';
+    
+                // Update the recommendation result with crop details
+                const crop = data.crop;
+                const details = cropDetails[crop] || {
+                    suitabilityScore: "N/A",
+                    growingSeason: "N/A",
+                    estimatedYield: "N/A",
+                    waterRequirements: "N/A",
+                    image: "https://example.com/images/default.jpg" // Default image if crop not found
+                };
+    
+                document.getElementById('recommendedCrop').textContent = crop;
+                document.getElementById('suitabilityScore').textContent = details.suitabilityScore;
+                document.getElementById('growingSeason').textContent = details.growingSeason;
+                document.getElementById('estimatedYield').textContent = details.estimatedYield;
+                document.getElementById('waterRequirements').textContent = details.waterRequirements;
+    
+                // Update the crop image
+                const cropImage = document.getElementById('cropImage');
+                cropImage.src = details.image;
+                cropImage.alt = crop;
+    
+                document.getElementById('recommendationResult').style.display = 'block';
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                document.getElementById('loader').style.display = 'none';
+                alert('An error occurred while fetching the recommendation.');
+            });
+        });
+    });
+    </script>
+  </body>
+</html>
